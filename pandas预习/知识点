@@ -1,0 +1,38 @@
+1.pandas的三种数据结构
+    a.series
+        它是由相同元素类型构建的一维数据结构，同时具有列表和字典的属性
+        创建：pd.Series(data=None, index=None)
+        data:传入数据，可以传入多种类型
+        index:在默认情况下索引为range(0, len(data))
+    b.dataframe
+        可以看成由Series组成的字典
+        创建：pd.DataFrame(data=None, index=None, columns=None)
+    c.panel
+2.DataFrame的下标索引取行，列，具体值
+    df[3] 取第三行
+    df[['filedname']] 取第几列
+    df.loc[]:标签定位
+    df.iloc[]:整型索引定位
+    df.ix[]:是df.loc[]和df.iloc[]合体
+    df.at[]:标签确定索引值
+    df.iat[]:整型确定索引值
+3.删除NaN（空）值的方法
+    df.dropna([axis=0]) :默认删除空值所在的行
+    df.dropna(axis=1)  :删除空值所在的列
+    df.dropna(how='all')  :删除一行中全为空值的行
+    df.dropna(thresh=4)  :删除一行中字段值个数小于4的行
+    df.dropna(subset=['',''])  :删除指定列为空的行
+4.填充NaN
+    df.fillna(0) :指定填充数值，将所有的nan填充为0
+    df.fillna({'':, '':}) :指定列填充数值，将指定列所有的nan填充为具体的数
+    填充方法：
+    method='ffill' ：填充值为前一行的值
+    或
+    method='backfill'  ：填充值为后一行的值
+5.替换
+    df.replace(1, 0) ：将所有的1替换为0
+    df['filedname'].replace(1, 0) ：将指定列的1替换为0
+    df.replace({99:100, 100:101}) ：映射替换，将所有的99替换为100，将所有的100替换为101
+6.删除重复行
+    df.duplicated() 返回Boolean向量,指示行是否重复
+    df.drop_duplicates() 删除重复行

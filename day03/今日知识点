@@ -1,0 +1,86 @@
+1.填充
+    以某种颜色自动填充闭合区域
+    mpl.fill_between(
+        x,   # x轴水平线
+        y1,  # 曲线1
+        y2,  # 曲线2
+        y1<y2, # 闭合条件
+        color='', # 填充颜色
+        alpha=0.2 # 透明的
+    )
+2.柱形图
+    mpl.bar(
+    x,
+    y,
+    width,
+    [bottom,]  # 以bottom为低开始花柱形图
+    color='',
+    label='',
+    alpha=,
+    align='' # 对其方式
+    )
+
+3.饼状图
+    mpl.pie(
+        values, # 值列表
+        spaces, # 扇形之间的间距列表
+        labels, # 标签列表
+        colors, # 颜色列表
+        '%d%%', # 标签所占比例格式
+        shadow=True, # 是否显示阴影
+        startangle=90, # 逆时针绘制饼图的起始角度
+        radius=1 # 饼图的半径
+    )
+4.等高线图
+    n = 1000
+    x = np.linspace(-5, 5, n)
+    rx, ry = np.meshgrid(x, x) # 将坐标网格化，必须用这个函数
+    z = (1 - rx / 2 + rx ** 5 + ry ** 3) * np.exp(-rx ** 2 - ry ** 2)
+    mpl.contour(
+    rx, # 所有坐标的x坐标
+    ry, # 所有坐标的y坐标
+    z, # 所有坐标点的高度
+    8, #划线的条数
+    # colors='black'
+    cmap='jet',
+    linewidths=0.5
+    )
+    mpl.contourf(
+    rx, # 所有坐标的x坐标
+    ry, # 所有坐标的y坐标
+    z, # 所有坐标点的高度
+    8, #划线的条数
+    cmap='jet'
+    )
+5.热成像图
+    mpl.imshow(
+        z,
+        cmap='',
+        origin='' # 垂直翻转
+    )  # 图形化显示矩阵
+    mpl.colorbar()  # 显示颜色条
+6.3D图像绘制
+    from mpl_toolkits.mplot3d import axes3d
+    ax3d = mpl.gca(porjection='3d')
+
+    matplotlib 支持绘制三维点阵，曲面，线框图
+    ax3d.scatter(...)  # 三维点阵
+    ax6d.plot_surface(...)  # 曲面
+    ax3d.plot_wireframe(...)  # 线框图
+
+    子图绘制3d图
+    mpl.subplot(223, projection='3d')
+7.极坐标系
+    适用于角度和长度的绘图
+    关键在于换坐标系
+    mpl.gca(projection='polar')
+8.简单动画
+    定义update函数用于刷新图像
+    # 定义函数行为
+    def update(number):
+        pass
+    mpl.gcf()  # 获取当前的窗口
+    update  # 更新函数
+    interval=10  # 间隔时间(毫秒)
+    mnia = ma.FuncAnimation(mpl.gcf(), update, interval=10)
+

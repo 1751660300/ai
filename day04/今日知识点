@@ -1,0 +1,45 @@
+1.numpy.loadtxt()加载文件成ndarray数组
+    numpy.loadtxt(
+        '',  # 文件路径
+        delimiter='',  # 内容分隔符
+        usecols=(1, 3, ...)  # 加载哪些列
+        unpack=False,  # 是否压缩
+        detype='u10, f8',  # 制定返回每列的数据类型
+        converters={1:func}  # 转换器字典，将指定的列按照函数逻辑转换为其他的数据
+    )
+2.统计指标
+    a.算术平均值
+        mean = numpy.mean()
+        mean = 数组[ndarray].mean()
+    b.加权平均值
+        样本：S = [s1, s2, s3, ...]
+        权重：W = [w1, w2, w3, ...]
+        加权平均值：a = S * W / (w1 + w2 + w3 + ...)
+        np.average(S, weights=W)
+    c.最值
+        np.max()
+        np.min()
+        np.ptp()  求极值
+        np.argmax() 最大值下标所以
+        np.argmin() 最小值下标所以
+        np.minimum((a, b)) 对数组对应元素的比较，取较小的元素，组成新的数组
+        np.maximum((a, b)) 对数组对应元素的比较，取较小的元素，组成新的数组
+        np.median() 中位数
+        np.std()  计算标准差
+3.数组的轴向处理
+    func(data):
+        pass
+    np.apply_along_axis(func, axis, array)
+    func:处理函数
+    axis：0（列）/1（行）
+4.卷积
+    激励函数：g(t)
+    单位激励下的响应函数：f(t)
+    绘制时间t与痛感h的函数关系图
+    numpy.convolve(a, b, 卷积类型)    valid有效卷积  same同维卷积  full 完全卷积
+
+5.布林带
+    布林带由三条线组成：
+    中轨：移动平均线
+    上轨：中轨加上2x5日收盘价的标准差（顶部的压力）
+    下轨：中轨减去2x5日收盘价的标准差（底部的支撑力）

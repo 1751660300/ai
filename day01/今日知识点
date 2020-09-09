@@ -1,0 +1,126 @@
+1.numpy 概述
+    a. numerical python, 数值的python, 补充了python语言所欠缺的数值计算能力
+    b. numpy 是其他数据分析和机器学习的底层库
+    c. numpy 是完全标准的c语言实现的,运行效率充分优化
+    d. 开源免费
+2.核心：多维数组
+    a. 代码简洁：减少python代码中的循环
+    b. 底层实现,厚内核（c）+薄接口（python）,保证性能
+3.numpy 基础
+    a.ndarray 数组
+        numpy.ndarray类的对象表示n维数组
+    b.内存中的ndarray对象,如图
+        元数据（matedata）：对数据的描述信息
+        实际数据：具体的数据
+    c.numpy数组对象的特点
+        是同质数组，所以的元素类型必须相同；
+        下标从0开始；
+    d.numpy数组对象的创建
+        import numpy as np
+        a = np.array(list)  序列
+        np.arange(int, int, int)   起始 结束 步长
+        np.zeros(int, dtype="")  元素的个数  元素的类型
+        np.ones(int, dtype="")  元素的个数  元素的类型
+    e.ndarray对象属性的基本操作
+        **数组的维度：**np.ndarray.shape;
+        **元素的类型：**np.ndarray.dtype;
+        **数组元素的个数：**np.ndarray.size;
+        **数组元素索引(下标)**
+            数组对象[..., 页号, 行号, 列号];
+            下标从0开始，到数组len-1结束。;
+    f.numpy内部的基本数据类型
+        |—————————————|————————————————————————————————————————|
+        | 类型名       | 类型表示符                               |
+        | ------------|--------------------------------------- |
+        | 布尔型       | bool_                                  |
+        | 有符号整数型  | int8(-128~127) / int16 / int32 / int64 |
+        | 无符号整数型  | uint8(0~255) / uint16 / uint32 / uint64|
+        | 浮点型       | float16 / float32 / float64            |
+        | 复数型       | complex64 / complex128                 |
+        | 字串型       | str_，每个字符用32位Unicode编码表示        |
+        | 日期类型     | datatime64                              |
+        |—————————————|————————————————————————————————————————|
+    g.自定义复合类型
+        #第一种设置dtype的方式
+        a = np.array(data, dtype='U3, 3int32, int32')
+        print(a)
+        print(a[0]['f0'], ":", a[1]['f1'])
+        print("=====================================")
+        #第二种设置dtype的方式
+        b = np.array(data, dtype=[('name', 'str_', 2),
+                            ('scores', 'int32', 3),
+                            ('ages', 'int32', 1)])
+        print(b[0]['name'], ":", b[0]['scores'])
+        print("=====================================")
+
+        #第三种设置dtype的方式
+        c = np.array(data, dtype={'names': ['name', 'scores', 'ages'],
+                            'formats': ['U3', '3int32', 'int32']})
+        print(c[0]['name'], ":", c[0]['scores'], ":", c.itemsize)
+        print("=====================================")
+
+        #第四种设置dtype的方式
+        d = np.array(data, dtype={'name': ('U3', 0),
+                            'scores': ('3i4', 16),
+                            'age': ('i4', 28)})
+        print(d[0]['names'], d[0]['scores'], d.itemsize)
+
+        print("=====================================")
+
+        #测试日期类型数组
+        f = np.array(['2011', '2012-01-01', '2013-01-01 01:01:01','2011-02-01'])
+        f = f.astype('M8[D]')
+        f = f.astype('i4')
+        print(f[3]-f[0])
+
+        **类型字符码**
+            | 类型              | 字符码                              |
+            | ----------------- | ----------------------------------- |
+            | np.bool_          | ?                                   |
+            | np.int8/16/32/64  | i1 / i2 / i4 / i8                   |
+            | np.uint8/16/32/64 | u1 / u2 / u4 / u8                   |
+            | np.float/16/32/64 | f2 / f4 / f8                        |
+            | np.complex64/128  | c8 / c16                            |
+            | np.str_           | U                                   |
+            | np.datetime64     | M8[Y] M8[M] M8[D] M8[h] M8[m] M8[s] |
+
+        **字节序前缀，用于多字节整数和字符串：**
+            `</>/[=]分别表示小端/大端/硬件字节序。`
+        **类型字符码格式**
+            <字节序前缀><维度><类型><字节数或字符数>
+            | 3i4      | 释义                                                         |
+            | -------- | ------------------------------------------------------------ |
+            | 3i4      | 大端字节序，3个元素的一维数组，每个元素都是整型，每个整型元素占4个字节。 |
+            | <(2,3)u8 | 小端字节序，6个元素2行3列的二维数组，每个元素都是无符号整型，每个无符号整型元素占8个字节。 |
+            | U7       | 包含7个字符的Unicode字符串，每个字符占4个字节，采用默认字节序。 |
+
+4.ndarray的变维
+    a. 视图变维 (reshape方法,ravel方法)
+        特点：共享源数据，返回新的序列
+        reshape(int, int, ...)
+        racel() :变成一维数组
+    b. 复制变维 (flatten方法)
+        特点：复制源数据变成独立的数据，返回新的序列
+        flatten(int, int, ...)
+    c. shape, resize() 变维
+        特点：在源数据上更改维数
+        shape = (int,int, ...)
+        resize((int, int, ...))
+5.ndarray数组切片
+6.ndarray的掩码操作
+    data = np.arange(100)
+    # 输出三的倍数
+    mask = data % 3 == 0
+    # print(data)
+    print(data[data % 3 == 0]) # mask == [False, False, True, ...]
+    print(data[mask])
+7.多维数组的组合与拆分
+    垂直方向的拆分与组合
+        组合：vstack((a, b, c, ...))
+        拆分：a, b, c, ... = vsplit(data, num)
+    水平方向的拆分与组合
+        组合：hstack((a, b, c, ...))
+        拆分：a, b, c, ... = hsplit(data, num)
+    深度方向的拆分与组合
+        组合：dstack((a, b, c, ...))
+        拆分：a, b, c, ... = dsplit(data, num)

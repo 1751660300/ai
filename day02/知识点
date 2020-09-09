@@ -1,0 +1,168 @@
+1.matplotlib基本功能
+    a.基础绘图
+        设置线型，线宽，颜色；
+        设置坐标轴的范围；
+        设置坐标刻度；
+        设置坐标轴；
+        图例；
+        特殊点；
+        备注；
+    b. 图形对象(图形窗口)
+       1. 子图
+       2. 刻度定位器
+       3. 刻度网格线
+       4. 半对数坐标
+       5. 散点图
+       6. 填充
+       7. 条形图
+       8. 饼图
+       9. 等高线图
+       10. 热成像图
+       11. 三维曲面
+       12. 简单动画
+2.用matplotlib绘制一条线
+    import numpy as np
+    import matplotlib.pyplot as mpl
+
+    # 绘制简单直线
+    # 创建两个ndarray数组x，y
+    x = np.linspace(0, 10, num=15)
+    y = np.logspace(10, 20, num=15, endpoint=False, base=np.e)
+
+    # 花一条直线
+    mpl.plot(x, y)
+
+    # 显示；这个方法会阻塞线程
+    mpl.show()
+3.线宽，颜色，线形，透明度
+    linewidth:线宽
+    color：线的颜色
+    linestyle：线的类型    '-':直线  '--':曲线   '-.':点虚线    ':':虚线
+    alpha：透明度 值为float类型
+    mpl.plot(x, y, linestyle=":", linewidth='3', color='red', alpha=0.5)
+4.设置坐标轴的范围
+    # 设置x轴范围
+    mpl.xlim(-np.pi, np.pi)
+    # 设置y轴范围
+    mpl.ylim(-0.5, 0.5)
+5.设置坐标轴的刻度
+    x轴：
+    matplotlib.xticks(x_val_list, x_text_list)
+    x_val_list :刻度值列表   x_text_list：刻度文本列表
+    y轴：
+    matplotlib.xticks(y_val_list, y_text_list)
+    y_val_list :刻度值列表   y_text_list：刻度文本列表
+    例如：
+        # 设置x轴的刻度值
+        mpl.xticks(np.arange(-np.pi, np.pi+1, np.pi/4),
+                   [r'$-\pi$', r'$-\frac{3\pi}{4}$', r'$-\frac{\pi}{2}$'
+                    , r'$-\frac{\pi}{4}$', '0', r'$\frac{\pi}{4}$'
+                    , r'$\frac{\pi}{2}$', r'$\frac{3\pi}{4}$'
+                   , r'$\pi$'])
+        # 设置y轴的刻度值
+        mpl.yticks(np.arange(-1, 2, 0.5))
+6.设置图标图
+    matplotlib.pyplot.title("标题")
+7.LaTex排版语法字符串(可使用mpl测试)
+    r'$x^n+y^n=z^n$'  ：x^n+y^n=z^n
+    r'$\int\frac{1}{x} dx = \ln |x| + C$',
+    r'$-\frac{\pi}{2}$'
+
+8.设置坐标轴
+    坐标轴名：left / right / bottom / top
+    # 获取当前坐标轴字典，{'left':左轴,'right':右轴,'bottom':下轴,'top':上轴 }
+    ax = mp.gca()
+    # 获取其中某个坐标轴
+    axis = ax.spines['坐标轴名']
+    # 设置坐标轴的位置。 该方法需要传入2个元素的元组作为参数
+    # type: <str> 移动坐标轴的参照类型  一般为'data' (以数据的值作为移动参照值)
+    # val:  参照值
+    axis.set_position(('data', val))
+    # 设置坐标轴的颜色
+    # color: <str> 颜色值字符串
+    axis.set_color(color)
+9.图例
+    显示两条曲线的图例，并测试loc属性。
+    # 再绘制曲线时定义曲线的label
+    # label: <关键字参数 str> 支持LaTex排版语法字符串
+    mp.plot(xarray, yarray ... label='', ...)
+    # 设置图例的位置
+    # loc: <关键字参数> 制定图例的显示位置 (若不设置loc，则显示默认位置)
+    #	 ===============   =============
+    #    Location String   Location Code
+    #    ===============   =============
+    #    'best'            0
+    #    'upper right'     1
+    #    'upper left'      2
+    #    'lower left'      3
+    #    'lower right'     4
+    #    'right'           5
+    #    'center left'     6
+    #    'center right'    7
+    #    'lower center'    8
+    #    'upper center'    9
+    #    'center'          10
+    #    ===============   =============
+    mp.legend(loc='')
+10.特殊点
+    # xarray: <序列> 所有需要标注点的水平坐标组成的序列
+    # yarray: <序列> 所有需要标注点的垂直坐标组成的序列
+    mp.scatter(xarray, yarray,
+               marker='', 		#点型 ~ matplotlib.markers
+               s=80, 			#大小
+               edgecolor='', 	#边缘色
+               facecolor='',	#填充色
+               zorder=3			#绘制图层编号 （编号越大，图层越靠上）
+    )
+    marker可以为：
+    ‘.’：点(point marker)       　　　　　　　 ‘,’：像素点(pixel marker)
+    ‘o’：圆形(circle marker)  　　　　　　　　  ‘v’：朝下三角形(triangle_down marker)
+    ‘^’：朝上三角形(triangle_up marker)     　 ‘<‘：朝左三角形(triangle_left marker)
+    ‘>’：朝右三角形(triangle_right marker)    ‘1’：(tri_down marker)
+    ‘2’：(tri_up marker)   　　　　　　　　　　 ‘3’：(tri_left marker)
+    ‘4’：(tri_right marker)    　　　　　　　　‘s’：正方形(square marker)
+    ‘p’：五边星(pentagon marker)  　　　　　　  ‘*’：星型(star marker)
+    ‘h’：1号六角形(hexagon1 marker)  　　　　  ‘H’：2号六角形(hexagon2 marker)
+    ‘+’：+号标记(plus marker)    　　　　　　　 ‘x’：x号标记(x marker)
+    ‘D’：菱形(diamond marker)  　　　　　　　　 ‘d’：小型菱形(thin_diamond marker)
+    ‘|’：垂直线形(vline marker)    　　　　　　 ‘_’：水平线形(hline marker)
+11.备注
+    在图表中为某个点添加备注。包含备注文本，备注箭头等图像的设置。
+    mp.annotate(
+        r'$\frac{\pi}{2}$',			#备注中显示的文本内容
+        xycoords='data',			#备注目标点所使用的坐标系（data表示数据坐标系）
+        xy=(x, y),	 				#备注目标点的坐标
+        textcoords='offset points',	#备注文本所使用的坐标系（offset points表示参照点的偏移坐标系）
+        xytext=(x, y),				#备注文本的坐标
+        fontsize=14,				#备注文本的字体大小
+        arrowprops=dict()			#使用字典定义文本指向目标点的箭头样式
+    )
+    arrowprops参数使用字典定义指向目标点的箭头样式
+    箭头样式（arrowstyle）字符串如下
+    ============   =============================================
+    Name           Attrs
+    ============   =============================================
+      '-'          None
+      '->'         head_length=0.4,head_width=0.2
+      '-['         widthB=1.0,lengthB=0.2,angleB=None
+      '|-|'        widthA=1.0,widthB=1.0
+      '-|>'        head_length=0.4,head_width=0.2
+      '<-'         head_length=0.4,head_width=0.2
+      '<->'        head_length=0.4,head_width=0.2
+      '<|-'        head_length=0.4,head_width=0.2
+      '<|-|>'      head_length=0.4,head_width=0.2
+      'fancy'      head_length=0.4,head_width=0.4,tail_width=0.4
+      'simple'     head_length=0.5,head_width=0.5,tail_width=0.2
+      'wedge'      tail_width=0.3,shrink_factor=0.5
+    ============   =============================================
+
+    连接线样式（connectionstyle）字符串如下
+    ============   =============================================
+    Name           Attrs
+    ============   =============================================
+      'angle' 		angleA=90,angleB=0,rad=0.0
+      'angle3' 		angleA=90,angleB=0`
+      'arc'			angleA=0,angleB=0,armA=None,armB=None,rad=0.0
+      'arc3' 		rad=0.0
+      'bar' 		armA=0.0,armB=0.0,fraction=0.3,angle=None
+    ============   =============================================
